@@ -1,16 +1,29 @@
+
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.input-group{
+  position: relative;
+  border-collapse: separate;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.input-group-addon{
+  color: #a2a2a2;
+  border-color: #cfd9db;
+  background-color: #ecf0f1;
+}
+
+
+.table-layout{
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  padding: 0;
 }
 
 .App-header {
@@ -24,15 +37,7 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
+
+
