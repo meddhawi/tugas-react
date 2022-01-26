@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import NumberFormat from "react-number-format";
 
 import {
     Form,
@@ -15,6 +16,11 @@ class Calculator extends Component{
             danaTersedia: '',
             durasiInves: '',
             asumsiTumbuh: '',
+            targetDanaTahun: '',
+            simpanDanaTahun: '',
+            kekurangan: '',
+            danaSimpanBulan: ''
+
         }
         this.task = this.task.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,17 +29,32 @@ class Calculator extends Component{
 
     
     task(danaTersedia, durasiInves, asumsiTumbuh){
-        var x = danaTersedia * durasiInves;
-        var profit = danaTersedia * (asumsiTumbuh/100 )* 12;
+        var danaTersediaInt = parseInt(danaTersedia.replace(/,/g, ""))
+        var durasiInvesInt = parseInt(durasiInves)
+        var asumsiTumbuhInt = parseInt(asumsiTumbuh)
+        var x = danaTersediaInt * durasiInvesInt;
+        var profit = danaTersediaInt * (asumsiTumbuhInt/100 )* 12;
         var targetDanaXTahun = x + profit;
         var simpanDanaXTahun = targetDanaXTahun - profit;
-        var kekurangan = simpanDanaXTahun - danaTersedia;
+        var kekurangan = simpanDanaXTahun - danaTersediaInt;
         var danaSimpanBulan = (kekurangan/12)/12;
-        console.log(targetDanaXTahun)
-        console.log(simpanDanaXTahun)
-        console.log(kekurangan)
-        console.log(danaSimpanBulan)
+        var taskResult = {
+            targetDanaXTahun,
+            simpanDanaXTahun,
+            kekurangan,
+            danaSimpanBulan
+        }
+
+        // return taskResult
+        this.setState({
+            targetDanaTahun: targetDanaXTahun,
+            simpanDanaTahun: simpanDanaXTahun,
+            kekurangan: kekurangan,
+            danaSimpanBulan: danaSimpanBulan
+        })
         
+
+                
 
 
     }
@@ -41,6 +62,7 @@ class Calculator extends Component{
     handleInputChange(event){
         event.preventDefault();
         console.log(event.target.name + " :" + event.target.value)
+        console.log(typeof(event.target.value))
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -49,7 +71,11 @@ class Calculator extends Component{
     handleSubmit(event){
         event.preventDefault();
         this.task(this.state.danaTersedia, this.state.durasiInves, this.state.asumsiTumbuh)
-        
+        console.log(this.state.targetDanaTahun)
+        console.log(this.state.simpanDanaTahun)
+        console.log(this.state.kekurangan)
+        console.log(this.state.danaSimpanBulan)
+
 
 
     }
@@ -65,11 +91,15 @@ class Calculator extends Component{
                             </div>
                             <div className='col-5'>
                                 <div className='input-group'>
-                                    <input type="text" className='form-control col-10' 
+                                    <NumberFormat
+                                        className='form-control col-10'
+                                        thousandSeparator={true}
                                         name='targetDana'
-                                        value={this.state.value} 
-                                        onChange={this.handleInputChange}/>
-                                    <span className="input-group-addon col-2 text-center p-1">IDR</span>
+                                        value={this.state.value}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    
+                                    <span className="input-group-addon text-center p-1">IDR</span>
                                 </div>
                             </div>
                         </div>
@@ -81,10 +111,13 @@ class Calculator extends Component{
                             </div>
                             <div className='col-5'>
                                 <div className='input-group'>
-                                    <input type="text" className='form-control col-10' 
+                                <NumberFormat
+                                        className='form-control col-10'
+                                        thousandSeparator={true}
                                         name='danaTersedia' 
                                         value={this.state.value}
-                                        onChange={this.handleInputChange}/>
+                                        onChange={this.handleInputChange}
+                                    />
                                     <span className="input-group-addon col-2 text-center p-1">IDR</span>
                                 </div>
                             </div>
@@ -135,7 +168,7 @@ class Calculator extends Component{
                             </div>
                         </div>
                         
-                        <input type="submit" value="Submit" className='btn btn-success m-3'/>
+                        <input type="submit" value="Submit" onClick={this.handleSubmit} className='btn btn-success m-3'/>
                     </Form>
                 </Container>
 
@@ -148,9 +181,10 @@ class Calculator extends Component{
                         </div>
                         <div className='col-5'>
                             <div className='input-group'>
-                                <input type="text" className='form-control col-10' 
-                                    name='targetDana'
-                                    value={this.state.targetDana} 
+                                <NumberFormat
+                                    className='form-control col-10'
+                                    thousandSeparator={true}
+                                    value={this.state.targetDanaTahun} 
                                     disabled='true'/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
@@ -163,9 +197,27 @@ class Calculator extends Component{
                         </div>
                         <div className='col-5'>
                             <div className='input-group'>
-                                <input type="text" className='form-control col-10' 
-                                    name='targetDana'
-                                    value={this.state.targetDana} 
+                                <NumberFormat
+                                    className='form-control col-10'
+                                    thousandSeparator={true}
+                                    value={this.state.simpanDanaTahun} 
+                                    disabled='true'/>
+                                <span className="input-group-addon col-2 text-center p-1">IDR</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <br/>
+                    <div className='row mt-2 m-1'>
+                        <div className='col-7'>
+                            <Form.Label>Kekurangan Dana</Form.Label>
+                        </div>
+                        <div className='col-5'>
+                            <div className='input-group'>
+                                <NumberFormat
+                                    className='form-control col-10'
+                                    thousandSeparator={true}
+                                    value={this.state.kekurangan} 
                                     disabled='true'/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
@@ -174,13 +226,14 @@ class Calculator extends Component{
 
                     <div className='row mt-2 m-1'>
                         <div className='col-7'>
-                            <Form.Label>Kekurangan Dana</Form.Label>
+                            <Form.Label>Dana Yang Harus Mulai Disisihkan per Bulan</Form.Label>
                         </div>
                         <div className='col-5'>
                             <div className='input-group'>
-                                <input type="text" className='form-control col-10' 
-                                    name='targetDana'
-                                    value={this.state.targetDana} 
+                                <NumberFormat
+                                    className='form-control col-10'
+                                    thousandSeparator={true}
+                                    value={this.state.danaSimpanBulan} 
                                     disabled='true'/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
@@ -193,16 +246,23 @@ class Calculator extends Component{
                         </div>
                         <div className='col-5'>
                             <div className='input-group'>
-                                <input type="text" className='form-control col-10' 
-                                    name='targetDana'
-                                    value={this.state.targetDana} 
-                                    disabled='true'/>
+                                    <NumberFormat
+                                        className='form-control col-10'
+                                        thousandSeparator={true}
+                                        name='targetDana'
+                                        value={parseFloat(this.state.asumsiTumbuh)} 
+                                        onChange={this.handleInputChange}
+                                        disabled='true'
+                                    />
+                                
                                 <div className='col-xs-7 col-sm-6 col-md-5'>
 									<span className='form-control'>%/Tahun</span>		
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    
                 </Container>
             </div>
         )
