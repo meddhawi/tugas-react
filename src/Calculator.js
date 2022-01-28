@@ -32,31 +32,23 @@ class Calculator extends Component{
         var danaTersediaInt = parseInt(danaTersedia.replace(/,/g, ""))
         var durasiInvesInt = parseInt(durasiInves)
         var asumsiTumbuhInt = parseInt(asumsiTumbuh)
+
         var x = danaTersediaInt * durasiInvesInt;
         var profit = danaTersediaInt * (asumsiTumbuhInt/100 )* 12;
+
         var targetDanaXTahun = x + profit;
         var simpanDanaXTahun = targetDanaXTahun - profit;
         var kekurangan = simpanDanaXTahun - danaTersediaInt;
         var danaSimpanBulan = (kekurangan/12)/12;
-        var taskResult = {
-            targetDanaXTahun,
-            simpanDanaXTahun,
-            kekurangan,
-            danaSimpanBulan
-        }
 
-        // return taskResult
-        this.setState({
-            targetDanaTahun: targetDanaXTahun,
-            simpanDanaTahun: simpanDanaXTahun,
+        var taskResult = {
+            targetDanaXTahun: targetDanaXTahun,
+            simpanDanaXTahun: simpanDanaXTahun,
             kekurangan: kekurangan,
             danaSimpanBulan: danaSimpanBulan
-        })
-        
+        }
 
-                
-
-
+        return taskResult
     }
 
     handleInputChange(event){
@@ -70,14 +62,15 @@ class Calculator extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-        this.task(this.state.danaTersedia, this.state.durasiInves, this.state.asumsiTumbuh)
-        console.log(this.state.targetDanaTahun)
-        console.log(this.state.simpanDanaTahun)
-        console.log(this.state.kekurangan)
-        console.log(this.state.danaSimpanBulan)
+        
+        var result = this.task(this.state.danaTersedia, this.state.durasiInves, this.state.asumsiTumbuh)
 
-
-
+        this.setState({
+            targetDanaTahun: result.targetDanaXTahun,
+            simpanDanaTahun: result.simpanDanaXTahun,
+            kekurangan: result.kekurangan,
+            danaSimpanBulan: result.danaSimpanBulan
+        })
     }
 
     render(){
@@ -185,7 +178,7 @@ class Calculator extends Component{
                                     className='form-control col-10'
                                     thousandSeparator={true}
                                     value={this.state.targetDanaTahun} 
-                                    disabled='true'/>
+                                    disabled/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
                         </div>
@@ -201,7 +194,7 @@ class Calculator extends Component{
                                     className='form-control col-10'
                                     thousandSeparator={true}
                                     value={this.state.simpanDanaTahun} 
-                                    disabled='true'/>
+                                    disabled/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
                         </div>
@@ -218,7 +211,7 @@ class Calculator extends Component{
                                     className='form-control col-10'
                                     thousandSeparator={true}
                                     value={this.state.kekurangan} 
-                                    disabled='true'/>
+                                    disabled/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
                         </div>
@@ -234,7 +227,7 @@ class Calculator extends Component{
                                     className='form-control col-10'
                                     thousandSeparator={true}
                                     value={this.state.danaSimpanBulan} 
-                                    disabled='true'/>
+                                    disabled/>
                                 <span className="input-group-addon col-2 text-center p-1">IDR</span>
                             </div>
                         </div>
@@ -252,7 +245,7 @@ class Calculator extends Component{
                                         name='targetDana'
                                         value={parseFloat(this.state.asumsiTumbuh)} 
                                         onChange={this.handleInputChange}
-                                        disabled='true'
+                                        disabled
                                     />
                                 
                                 <div className='col-xs-7 col-sm-6 col-md-5'>
